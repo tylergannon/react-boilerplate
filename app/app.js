@@ -6,7 +6,7 @@
  */
 
 // Needed for redux-saga es6 generator support
-import 'babel-polyfill';
+// import 'babel-polyfill';
 
 // Import all the third party stuff
 import React from 'react';
@@ -68,10 +68,11 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 export function renderApp({ messages } = {}) {
+  // console.log("BRATHNOGGLE");
   // configure redux-auth BEFORE rendering the page
   return store.dispatch(configure(
     // use the FULL PATH to your API
-    { apiUrl: 'http://TODO-YOUR-API-ENDPOINT' },
+    { apiUrl: '/api' },
     { storage: 'localStorage', isServer: false, cleanSession: false, clientOnly: true }
   )).then(({ blank } = {}) => {
     if (blank) {
@@ -88,12 +89,11 @@ export function renderApp({ messages } = {}) {
     );
   });
 }
-
-const render = (messages) => {
-  renderApp({ messages }).then((appComponent) => {
-    ReactDOM.render(appComponent, MOUNT_NODE);
-  });
-};
+function appThingy(appComponent) {
+  console.log(appComponent);
+  ReactDOM.render(appComponent, MOUNT_NODE);
+}
+const render = (messages) => renderApp({ messages }).then(appThingy);
 
 if (module.hot) {
   // Hot reloadable React components and translation json files
@@ -106,21 +106,9 @@ if (module.hot) {
 }
 
 // Chunked polyfill for browsers without Intl support
-if (!window.Intl) {
-  (new Promise((resolve) => {
-    resolve(import('intl'));
-  }))
-    .then(() => Promise.all([
-      import('intl/locale-data/jsonp/en.js'),
-      import('intl/locale-data/jsonp/de.js'),
-    ]))
-    .then(() => render(translationMessages))
-    .catch((err) => {
-      throw err;
-    });
-} else {
-  render(translationMessages);
-}
+console.log(translationMessages);
+
+render(translationMessages);
 
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,

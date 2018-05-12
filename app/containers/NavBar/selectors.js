@@ -5,6 +5,8 @@ import { createSelector } from 'reselect';
  */
 const selectNavBarDomain = (state) => state.get('navBar');
 
+const selectAuth = (state) => state.get('auth');
+
 /**
  * Other specific selectors
  */
@@ -19,7 +21,19 @@ const makeSelectNavBar = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectAuth = () => createSelector(
+  selectAuth,
+  (substate) => substate.toJS()
+);
+
+const makeSelectUser = () => createSelector(
+  selectAuth,
+  (authState) => authState.get('user').toJS()
+);
+
 export default makeSelectNavBar;
 export {
-  selectNavBarDomain,
+  makeSelectNavBar,
+  makeSelectAuth,
+  makeSelectUser,
 };

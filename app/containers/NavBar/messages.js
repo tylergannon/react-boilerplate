@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.containers.NavBar.header',
     defaultMessage: 'This is NavBar container !',
   },
+  signOut: {
+    id: 'app.containers.NavBar.signOut',
+    defaultMessage: 'Sign Out {name}',
+  },
 });

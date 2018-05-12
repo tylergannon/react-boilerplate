@@ -16,6 +16,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
+import { configure } from 'redux-auth';
 
 // Import root app
 import App from 'containers/App';
@@ -66,17 +67,36 @@ const history = createHistory();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
+export function renderApp({ cookies, isServer, currentLocation, messages } = {}) {
+  // configure redux-auth BEFORE rendering the page
+  return store.dispatch(configure(
+    // use the FULL PATH to your API
+    { apiUrl: 'http://dmchatbot-api.test/api/v1' },
+    { isServer, cookies, currentLocation }
+  )).then(({ blank } = {}) => {
+    if (blank) {
+      return <noscript />;
+    }
+    return (
+      <Provider store={store}>
+        <LanguageProvider messages={messages}>
+          <ConnectedRouter history={history}>
+            <App />
+          </ConnectedRouter>
+        </LanguageProvider>
+      </Provider>
+    );
+  });
+}
+
 const render = (messages) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </LanguageProvider>
-    </Provider>,
-    MOUNT_NODE
-  );
+  renderApp({ messages }).then((appComponent) => {
+    // console.log('app=', appComponent);
+    // console.log('store right now', store);
+    // console.log('state right now', store.getState());
+    // console.log('auth right now', store.getState().get('auth'));
+    ReactDOM.render(appComponent, MOUNT_NODE);
+  });
 };
 
 if (module.hot) {

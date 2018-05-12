@@ -6,6 +6,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
+import { EmailSignUpForm } from 'redux-auth/material-ui-theme';
 
 import H1 from 'components/H1';
 import messages from './messages';
@@ -31,6 +32,7 @@ export default class FeaturePage extends React.Component { // eslint-disable-lin
         <H1>
           <FormattedMessage {...messages.header} />
         </H1>
+        <EmailSignUpForm />
         <List>
           <ListItem>
             <ListItemTitle>

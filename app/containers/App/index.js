@@ -10,6 +10,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
+import { AuthGlobals } from 'redux-auth/material-ui-theme';
+// import { AuthGlobals } from "redux-auth/bootstrap-theme";
 
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
@@ -29,6 +31,7 @@ const AppWrapper = styled.div`
 export default function App() {
   return (
     <AppWrapper>
+      <AuthGlobals />
       <Helmet
         titleTemplate="%s - React.js Boilerplate"
         defaultTitle="React.js Boilerplate"

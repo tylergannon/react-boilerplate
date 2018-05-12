@@ -28,6 +28,10 @@ const ReactBoilerplate = {
         'ip',
         'minimist',
         'sanitize.css',
+        'mongoose',
+        'passport',
+        'passport-local',
+        'passport-local-mongoose',
       ],
 
       /**

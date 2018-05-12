@@ -9,3 +9,4 @@ stats.json
 npm-debug.log
 .idea
 package-lock.json
+redux_auth/

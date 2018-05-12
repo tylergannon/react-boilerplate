@@ -1,0 +1,4 @@
+[submodule "app/redux_auth"]
+	path = app/redux_auth
+	url = git@github.com:tylergannon/redux-auth.git
+	branch = update-components

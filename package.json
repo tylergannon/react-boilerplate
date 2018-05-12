@@ -238,7 +238,7 @@
     "react-router-dom": "4.1.1",
     "react-router-redux": "5.0.0-alpha.6",
     "redux": "3.6.0",
-    "redux-auth": "https://github.com/mikeover/redux-auth.git",
+    "redux-auth": "https://github.com/mikeover/redux-auth.git#material-old",
     "redux-immutable": "4.0.0",
     "redux-saga": "0.15.3",
     "redux-thunk": "^2.2.0",

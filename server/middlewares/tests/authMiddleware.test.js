@@ -13,8 +13,8 @@ function newUser() {
 async function createUser() {
   const user = new User({ username: casual.email });
   await user.setPassword('sourdough');
-  return user.save();
-  // return user;
+  await user.save();
+  return user;
 }
 
 describe('Auth routes', () => {
@@ -25,11 +25,8 @@ describe('Auth routes', () => {
     });
     describe('When validation fails', () => {
       describe('Because email is taken', () => {
-        let theUser;
-        beforeEach(() => {
-          theUser = newUser();
-        });
         it('Responds with 422', async () => {
+          const theUser = newUser();
           await request(app).post('/api/auth')
                             .send(theUser).expect(200);
           await request(app).post('/api/auth')

@@ -1,11 +1,21 @@
 import casual from 'casual';
+import redis from 'redis';
+import { promisify } from 'util';
+
 // import fromJS from 'immutable';
 import { makeNewToken, unpackToken, validateToken } from '../tokenManagement';
 import User from '../../../model/user';
+const redisClient = redis.createClient();
+redisClient.getAsync = promisify(redisClient.get).bind(redisClient);
+redisClient.setexAsync = promisify(redisClient.setex).bind(redisClient);
 
 import('../../../app');
 
 const ACCESS_TOKEN = 'access-token';
+
+async function sleep(ms = 500) {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
 async function createUser() {
   try {
@@ -43,7 +53,7 @@ describe('Token Validation', () => {
           await setUp();
           expect(newToken[ACCESS_TOKEN]).not.toEqual(token);
         });
-        it('moves the token into the usedTokens array', async () => {
+        it('removes old token from user adds it to redis', async () => {
           user = await createUser();
           tokenData = makeNewToken(user);
           token = tokenData[ACCESS_TOKEN];
@@ -52,6 +62,7 @@ describe('Token Validation', () => {
           expect(await validateToken(token)).toBeTruthy();
           user = await User.findOne({ username: user.username }).exec();
           expect(user.tokens).not.toContain(token);
+          expect(await redisClient.getAsync(token)).toBeTruthy();
         });
       });
 
@@ -65,7 +76,12 @@ describe('Token Validation', () => {
         describe('within threshold usable time', () => {
           it('returns a new token and does not change the usedTokens list.', async () => {
             await setUpForUsedTokens();
-            expect(await validateToken(token)).toBeTruthy();
+            await redisClient.setexAsync(token, 5, 2);
+            const newTokenData = await validateToken(token);
+            expect(newTokenData).toBeTruthy();
+            await sleep();
+            user = await User.findOne({ username: user.username }).exec();
+            expect(user.tokens).toContain(newTokenData[ACCESS_TOKEN]);
           });
         });
         describe('outside threshold', () => {

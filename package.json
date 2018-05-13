@@ -40,7 +40,8 @@
     "lint:staged": "lint-staged",
     "pretest": "npm run test:clean && npm run lint",
     "test:clean": "rimraf ./coverage",
-    "test": "cross-env NODE_ENV=test jest --coverage",
+    "test": "cross-env NODE_ENV=test jest --coverage app",
+    "apitest": "cross-env NODE_ENV=test jest --testEnvironment node server",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
@@ -253,6 +254,7 @@
     "react-redux": "5.0.5",
     "react-router-dom": "4.1.1",
     "react-router-redux": "5.0.0-alpha.6",
+    "redis": "^2.8.0",
     "redux": "3.6.0",
     "redux-auth": "https://github.com/mikeover/redux-auth.git#material-old",
     "redux-immutable": "4.0.0",

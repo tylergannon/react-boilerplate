@@ -71,7 +71,7 @@ export function renderApp({ messages } = {}) {
   // configure redux-auth BEFORE rendering the page
   return store.dispatch(configure(
     // use the FULL PATH to your API
-    { apiUrl: 'http://TODO-YOUR-API-ENDPOINT' },
+    { apiUrl: '/api' },
     { storage: 'localStorage', isServer: false, cleanSession: false, clientOnly: true }
   )).then(({ blank } = {}) => {
     if (blank) {

@@ -1,18 +1,19 @@
 /* eslint consistent-return:0 */
+import express from 'express';
+import { resolve } from 'path';
+import logger from './logger';
+import argv from './argv';
+import port from './port';
+import setup from './middlewares/frontendMiddleware';
+import authRoutes from './middlewares/authenticationRoutes';
 
-const express = require('express');
-const logger = require('./logger');
-
-const argv = require('./argv');
-const port = require('./port');
-const setup = require('./middlewares/frontendMiddleware');
+const app = express();
 const isDev = process.env.NODE_ENV !== 'production';
 const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngrok') : false;
-const resolve = require('path').resolve;
-const app = express();
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
+app.use('/api/auth', authRoutes);
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

@@ -53,6 +53,8 @@ const ReactBoilerplate = {
         'passport-local',
         'passport-local-mongoose',
         'serve-favicon',
+        'async-redis',
+        'redis',
       ],
 
       /**

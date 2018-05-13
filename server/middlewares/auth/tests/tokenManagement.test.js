@@ -52,19 +52,14 @@ describe('Token Validation', () => {
           expect(await validateToken(token)).toBeTruthy();
           user = await User.findOne({ username: user.username }).exec();
           expect(user.tokens).not.toContain(token);
-          expect(user.usedTokens.length).toEqual(1);
         });
       });
 
       describe('"usedTokens" list', () => {
-        async function setUpForUsedTokens(usedAtTimeRelativeToNow = 0) {
+        async function setUpForUsedTokens() {
           user = await createUser();
           tokenData = makeNewToken(user);
           token = tokenData[ACCESS_TOKEN];
-          user.usedTokens.push({
-            usedAt: (Date.now() + usedAtTimeRelativeToNow),
-            token: tokenData[ACCESS_TOKEN],
-          });
           await user.save();
         }
         describe('within threshold usable time', () => {

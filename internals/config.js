@@ -55,6 +55,8 @@ const ReactBoilerplate = {
         'serve-favicon',
         'async-redis',
         'redis',
+        'json-loader',
+        'file-loader',
       ],
 
       /**
